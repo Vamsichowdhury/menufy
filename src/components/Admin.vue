@@ -6,14 +6,14 @@
             </v-banner-text>
 
             <template v-slot:actions>
-                <v-btn @click="openCategoryDialog = true" class="text-none" color="primary" min-width="92"
+                <v-btn @click="handleCategory('Add Category')" class="text-none" color="primary" min-width="92"
                     variant="outlined" rounded>
                     <v-icon class="mx-2">mdi-plus</v-icon>
                     Add Category
                 </v-btn>
             </template>
         </v-banner>
-        <category-product-dialog :closeCategoryDialog="closeCategoryDialog" />
+        <category-product-dialog />
         <delete-category v-if="categoryDeletionDialog" :categoryDeletionData="categoryDeletionData"
             :closeCategoryDeletionDialog="closeCategoryDeletionDialog" />
         <v-container fluid class="scrollable-container">
@@ -84,10 +84,13 @@ export default {
     },
     data: () => ({
         tab: null,
-        scrollInvoked: 0,
-        openCategoryDialog: false,
         categoryDeletionDialog: false
     }),
+
+    computed: {
+        ...mapGetters("categories", ["getCategories"]),
+    },
+    
     methods: {
 
         ...mapActions("categories", ["fetchCategories"]),
@@ -97,9 +100,7 @@ export default {
             this.getCategories[index].loading = true;
             setTimeout(() => (this.getCategories[index].loading = false), 2000);
         },
-        closeCategoryDialog(value) {
-            this.openCategoryDialog = value
-        },
+
         handleCategoryDeletion(item, index) {
             this.categoryDeletionData = item
             this.categoryDeletionDialog = true
@@ -118,9 +119,7 @@ export default {
             // this.reserve(index)
         }
     },
-    computed: {
-        ...mapGetters("categories", ["getCategories"]),
-    },
+
     created() {
         this.fetchCategories();
     },
@@ -132,10 +131,7 @@ export default {
     height: 85vh;
     overflow-y: auto;
 }
-</style>
 
-
-<style lang="scss" scoped>
 .description-container {
     height: 100px;
     overflow: auto;

@@ -1,4 +1,4 @@
-import { getAllCategories, createCategory, deleteCategory } from "../../api/api.js"
+import { getAllCategories, createCategory, editCategory, deleteCategory } from "../../api/api.js"
 const categories = {
     namespaced: true,
     state: {
@@ -30,6 +30,10 @@ const categories = {
         },
         createCategory: async ({ dispatch }, payload) => {
             await createCategory(payload)
+            dispatch('fetchCategories');
+        },
+        editCategory: async ({ dispatch }, {id, category}) => {
+            await editCategory({id, category})
             dispatch('fetchCategories');
         },
         deleteCategory: async ({ dispatch }, payload) => {

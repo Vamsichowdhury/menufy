@@ -20,7 +20,7 @@
                         Cancel
                     </v-btn>
                     <v-spacer></v-spacer>
-                    <v-btn :disabled="!isValid" @click="handleNewCategory()" :loading="isLoading"
+                    <v-btn :disabled="!isValid" @click="handleCategory()" :loading="isLoading"
                         color="deep-purple-accent-4">
                         Submit
                     </v-btn>
@@ -37,33 +37,13 @@ export default {
     props: ['closeCategoryDialog'],
     data() {
         return {
-            // dialog: true,
             categoryName: "",
             categoryDesc: "",
-            // dialog: false,
             isValid: false,
             isLoading: false,
         }
     },
-    methods: {
-        ...mapMutations("categories", ["setCategories", "setCategoryDialogData"]),
-        ...mapActions("categories", ["createCategory"]),
 
-        closeDialog() {
-            this.setCategoryDialogData({ open: false })
-        },
-        handleNewCategory() {
-            const newCategory = {
-                loading: false,
-                imageSrc: "https://cdn.vuetifyjs.com/images/cards/cooking.png",
-                title: this.categoryName,
-                description: this.categoryDesc,
-                totalItems: [],
-            }
-            this.createCategory(newCategory)
-            this.closeDialog()
-        }
-    },
     computed: {
         ...mapGetters("categories", ["getCategories", "getCategoryDialogData"]),
 
@@ -71,8 +51,32 @@ export default {
             return this.categoryName && this.categoryDesc
         }
     },
-    beforeMount() {
-        console.log(this.getCategoryDialogData)
+
+    methods: {
+        ...mapMutations("categories", ["setCategories", "setCategoryDialogData"]),
+        ...mapActions("categories", ["createCategory", "editCategory"]),
+
+        closeDialog() {
+            this.setCategoryDialogData({ open: false })
+        },
+        handleCategory() {
+            const category = {
+                loading: false,
+                imageSrc: "https://cdn.vuetifyjs.com/images/cards/cooking.png",
+                title: this.categoryName,
+                description: this.categoryDesc,
+                totalItems: [],
+            }
+            if (this.getCategoryDialogData?.operation === "Add Category") {
+                this.createCategory(category)
+            } else if (this.getCategoryDialogData?.operation === "Edit Category") {
+                this.editCategory({ id: this.getCategoryDialogData?.data?._id, category })
+            }
+            this.closeDialog()
+        }
+    },
+
+    beforeUpdate() {
         this.categoryName = this.getCategoryDialogData?.data?.title || ""
         this.categoryDesc = this.getCategoryDialogData?.data?.description || ""
     },

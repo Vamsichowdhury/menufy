@@ -12,9 +12,14 @@ const createCategory = async (payload) => {
     return await axios.post(url, payload)
 };
 
+const editCategory = async ({ id, category }) => {
+    let url = `${domain}/categories/${id}`;
+    return await axios.put(url, category)
+};
+
 const deleteCategory = async (payload) => {
     let url = `${domain}/categories/${payload}`;
     return await axios.delete(url)
 };
 
-export { getAllCategories, createCategory, deleteCategory }
+export { getAllCategories, createCategory, deleteCategory, editCategory }
