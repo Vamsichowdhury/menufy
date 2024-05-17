@@ -8,6 +8,8 @@
 import vuetify from './vuetify'
 import router from '@/router'
 import { store } from '../store/store'
+import { createVuetify } from 'vuetify'
+
 
 export function registerPlugins(app) {
   app
@@ -15,3 +17,9 @@ export function registerPlugins(app) {
     .use(router)
     .use(store)
 }
+
+export default createVuetify({
+  theme: {
+    defaultTheme: 'light'
+  }
+})

@@ -1,18 +1,21 @@
 <template>
-    <div class="text-center pa-4">
-        <v-dialog v-model="getCategoryDialogData.open" width="auto">
+    <div v-if="getCategoryDialogData.open" class="text-center">
+        <v-dialog v-model="dialog" width="auto">
             <v-card class="mx-auto" style="max-width: 500px; width: 350px;">
-                <v-toolbar color="deep-purple-accent-4" cards dark flat>x
+                <v-toolbar color="primary" cards dark flat>
                     <v-card-title class="text-h6 font-weight-regular">
                         {{ getCategoryDialogData?.operation }}
                     </v-card-title>
                     <v-spacer></v-spacer>
                 </v-toolbar>
                 <v-form ref="form" v-model="isValid" class="pa-4 pt-6">
-                    <v-text-field v-model="categoryName" color="deep-purple" label="Enter Category name"
+                    <v-text-field v-model="categoryName" color="primary" label="Enter Category name"
                         variant="filled"></v-text-field>
-                    <v-textarea v-model="categoryDesc" color="deep-purple" label="Bio" rows="1" variant="filled"
+                    <v-textarea v-model="categoryDesc" color="primary" label="Bio" rows="1" variant="filled"
                         auto-grow></v-textarea>
+                    <v-btn color="primary" variant="flat" block>
+                        {{ getCategoryDialogData?.operation === "Add Category" ? "Upload Image" : "Change Image" }}
+                    </v-btn>
                 </v-form>
                 <v-divider></v-divider>
                 <v-card-actions>
@@ -20,8 +23,7 @@
                         Cancel
                     </v-btn>
                     <v-spacer></v-spacer>
-                    <v-btn :disabled="!isValid" @click="handleCategory()" :loading="isLoading"
-                        color="deep-purple-accent-4">
+                    <v-btn :disabled="!isValid" @click="handleCategory()" :loading="isLoading" color="primary">
                         Submit
                     </v-btn>
                 </v-card-actions>
@@ -37,6 +39,7 @@ export default {
     props: ['closeCategoryDialog'],
     data() {
         return {
+            dialog: true,
             categoryName: "",
             categoryDesc: "",
             isValid: false,

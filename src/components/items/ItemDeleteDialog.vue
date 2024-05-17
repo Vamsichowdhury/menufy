@@ -4,13 +4,13 @@
             <v-card class="mx-auto" style="max-width: 500px; width: 350px;">
                 <v-toolbar color="primary" cards dark flat>x
                     <v-card-title class="text-h6 font-weight-regular">
-                        Delete Category
+                        Delete Item
                     </v-card-title>
                     <v-spacer></v-spacer>
                 </v-toolbar>
                 <v-card-text>
                     <div class="text-medium-emphasis mb-4">
-                        Are you sure, you want to delete Category: {{ categoryDeletionData?.title }} ?
+                        Are you sure, you want to delete Item: {{ categoryDeletionData?.title }} ?
                     </div>
                 </v-card-text>
                 <v-divider></v-divider>
