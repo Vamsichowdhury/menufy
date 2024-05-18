@@ -43,7 +43,7 @@
     </v-card>
 </template>
 <script>
-import { mapGetters, mapMutations } from "vuex";
+    import { mapGetters, mapMutations } from "vuex";
 
 export default {
     data: () => ({
@@ -61,7 +61,7 @@ export default {
         navBarList: [
             { icon: "mdi-home", title: "Home", value: "home", path: "/home" },
             { icon: "mdi-widgets", title: "Menu", value: "menu", path: "/menu" },
-            { icon: "mdi-heart", title: "Wishlist", value: "wishlist", path: "/wishlist" },
+            { icon: "mdi-cart", title: "Cart", value: "cart", path: "/cart" },
         ],
     }),
     computed: {
