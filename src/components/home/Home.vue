@@ -26,7 +26,7 @@
                 </v-col>
                 <v-col cols="12" md="6"
                     :class="`d-flex align-center justify-start ${$vuetify.display.mdAndUp ? 'pa-5' : 'mobile-image'}`">
-                    <v-img src="../assets/salad.png" aspect-ratio="1" contain></v-img>
+                    <v-img src="../../assets/salad.png" aspect-ratio="1" contain></v-img>
                 </v-col>
             </v-row>
         </v-container>

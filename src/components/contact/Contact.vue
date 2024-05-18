@@ -1,8 +1,23 @@
 <template>
+  <!-- use this
+
+
+
+
+  https://vuetifyjs.com/en/components/autocompletes/#filter
+
+
+
+
+
+
+ -->
+
+
   <v-card class="mx-auto" max-width="500">
     <v-card-item class="pa-5">
       <v-card-title class="text-h5 text-center">
-        <span class="text-h5 text-center">Contact</span>
+        <span class="text-h5">Contact</span>
       </v-card-title>
 
     </v-card-item>

@@ -13,8 +13,8 @@
                 </v-btn>
             </template>
         </v-banner>
-        <category-product-dialog />
-        <delete-category v-if="categoryDeletionDialog" :categoryDeletionData="categoryDeletionData"
+        <category-dialog />
+        <delete-category-dialog v-if="categoryDeletionDialog" :categoryDeletionData="categoryDeletionData"
             :closeCategoryDeletionDialog="closeCategoryDeletionDialog" />
         <v-container fluid class="scrollable-container">
             <v-row>
@@ -76,14 +76,14 @@
     </v-card>
 </template>
 <script>
-import CategoryProductDialog from "../components/CategoryProductDialog.vue"
-import DeleteCategory from "../components/DeleteDialog.vue"
+import CategoryDialog from "./CategoryDialog.vue"
+import DeleteCategoryDialog from "./DeleteCategoryDialog.vue"
 import { mapActions, mapMutations, mapGetters } from "vuex";
 
 export default {
     components: {
-        CategoryProductDialog,
-        DeleteCategory
+        CategoryDialog,
+        DeleteCategoryDialog
     },
     data: () => ({
         tab: null,
@@ -91,13 +91,13 @@ export default {
     }),
 
     computed: {
-        ...mapGetters("categories", ["getCategories"]),
+        ...mapGetters("adminPanel/categories", ["getCategories"]),
     },
 
     methods: {
 
-        ...mapActions("categories", ["fetchCategories"]),
-        ...mapMutations("categories", ["setCategoryDialogData"]),
+        ...mapActions("adminPanel/categories", ["fetchCategories"]),
+        ...mapMutations("adminPanel/categories", ["setCategoryDialogData"]),
 
         reserve(index) {
             this.getCategories[index].loading = true;

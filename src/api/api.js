@@ -1,44 +1,72 @@
 import axios from 'axios'
 
+axios.interceptors.request.use(
+    config => {
+        const token = localStorage.getItem('authToken')
+        if (token) {
+            config.headers.Authorization = `Bearer ${token}`
+        }
+        return config
+    },
+    error => {
+        return Promise.reject(error)
+    }
+)
+
 const domain = "http://localhost:5001/api"
 
-const getSelectedCategory = async (id) => {
-    let url = `${domain}/categories/${id}`;
+const getSelectedCategoryAPI = async (id) => {
+    let url = `${domain}/admin/categories/${id}`;
     return await axios.get(url)
 };
 
-const getAllCategories = async () => {
-    let url = `${domain}/categories`;
+const getAllCategoriesAPI = async () => {
+    let url = `${domain}/admin/categories`;
     return await axios.get(url)
 };
 
-const createCategory = async (payload) => {
-    let url = `${domain}/categories`;
+const createCategoryAPI = async (payload) => {
+    let url = `${domain}/admin/categories`;
     return await axios.post(url, payload)
 };
 
-const editCategory = async ({ id, category }) => {
-    let url = `${domain}/categories/${id}`;
+const editCategoryAPI = async ({ id, category }) => {
+    let url = `${domain}/admin/categories/${id}`;
     return await axios.put(url, category)
 };
 
-const deleteCategory = async (payload) => {
-    let url = `${domain}/categories/${payload}`;
+const deleteCategoryAPI = async (payload) => {
+    let url = `${domain}/admin/categories/${payload}`;
     return await axios.delete(url)
 };
-const addItemToCategory = async (payload) => {
-    let url = `${domain}/categories/${payload?.categoryId}/items`;
+const addItemToCategoryAPI = async (payload) => {
+    let url = `${domain}/admin/categories/${payload?.categoryId}/items`;
     return await axios.post(url, payload.item)
 };
 
-const editItem = async ({ item, categoryId }) => {
-    let url = `${domain}/categories/${categoryId}/items/${item?._id}`;
+const editItemAPI = async ({ item, categoryId }) => {
+    let url = `${domain}/admin/categories/${categoryId}/items/${item?._id}`;
     return await axios.put(url, item)
 };
 
-const deleteItem = async ({ itemId, categoryId }) => {
-    let url = `${domain}/categories/${categoryId}/items/${itemId}`;
+const deleteItemAPI = async ({ itemId, categoryId }) => {
+    let url = `${domain}/admin/categories/${categoryId}/items/${itemId}`;
     return await axios.delete(url)
 };
 
-export { getSelectedCategory, getAllCategories, createCategory, deleteCategory, editCategory, addItemToCategory, editItem, deleteItem }
+const loginAdminAPI = async (payload) => {
+    let url = `${domain}/admin/login`;
+    return await axios.post(url, payload)
+};
+
+export {
+    getSelectedCategoryAPI,
+    getAllCategoriesAPI,
+    createCategoryAPI,
+    deleteCategoryAPI,
+    editCategoryAPI,
+    addItemToCategoryAPI,
+    editItemAPI,
+    deleteItemAPI,
+    loginAdminAPI,
+}

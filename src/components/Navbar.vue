@@ -43,7 +43,7 @@
     </v-card>
 </template>
 <script>
-    import { mapGetters, mapMutations } from "vuex";
+import { mapGetters, mapMutations } from "vuex";
 
 export default {
     data: () => ({
@@ -56,7 +56,7 @@ export default {
             { icon: "mdi-cart", title: "Cart", value: "cart", path: "/cart" },
             { icon: "mdi-heart", title: "Wishlist", value: "wishlist", path: "/wishlist" },
             { icon: "mdi-map-marker", title: "Contact", value: "contact", path: "/contact" },
-            { icon: "mdi-account", title: "Admin", value: "admin", path: "/admin" }
+            { icon: "mdi-account", title: "Admin", value: "admin", path: "/admin/categories" }
         ],
         navBarList: [
             { icon: "mdi-home", title: "Home", value: "home", path: "/home" },
@@ -65,11 +65,11 @@ export default {
         ],
     }),
     computed: {
-        ...mapGetters("categories", ["getTheme"]),
+        ...mapGetters("settings/settings", ["getTheme"]),
     },
     methods: {
 
-        ...mapMutations("categories", ["setTheme"]),
+        ...mapMutations("settings/settings", ["setTheme"]),
 
         handleTheme() {
             if (this.getTheme === 'light') {
@@ -82,10 +82,10 @@ export default {
         }
     },
     created() {
-      console.log("created")
+        console.log("created")
     },
     updated() {
-      console.log("updated")
+        console.log("updated")
     }
 }
 </script>

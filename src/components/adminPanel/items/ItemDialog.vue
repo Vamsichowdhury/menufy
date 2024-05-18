@@ -1,4 +1,12 @@
 <template>
+    <!-- use this 
+
+
+    https://vuetifyjs.com/en/components/forms/#rules
+https://vuetifyjs.com/en/components/text-fields/#placeholders
+https://vuetifyjs.com/en/components/text-fields/#forms
+
+     -->
     <div v-if="getItemDialogData.open" class="text-center">
         <v-dialog v-model="dialog" width="auto">
             <v-card class="mx-auto" style="max-width: 500px; width: 350px;">
@@ -54,7 +62,7 @@ export default {
     },
 
     computed: {
-        ...mapGetters("categories", ["getItemDialogData"]),
+        ...mapGetters("adminPanel/items", ["getItemDialogData"]),
 
         isValid() {
             return this.itemName && this.itemDesc
@@ -62,8 +70,8 @@ export default {
     },
 
     methods: {
-        ...mapMutations("categories", ["setItemDialogData"]),
-        ...mapActions("categories", ["addItemToCategory", "editItem", "deleteItem"]),
+        ...mapMutations("adminPanel/items", ["setItemDialogData"]),
+        ...mapActions("adminPanel/items", ["addItemToCategory", "editItem", "deleteItem"]),
 
         closeDialog() {
             this.setItemDialogData({ open: false })
@@ -87,12 +95,8 @@ export default {
             this.closeDialog()
         }
     },
-    beforeDestroy() {
-        console.log("this.getItemDialogData", this.getItemDialogData)
-    },
 
     beforeUpdate() {
-        console.log(this.getItemDialogData)
         this.itemName = this.getItemDialogData?.data?.name || ""
         this.itemPrice = this.getItemDialogData?.data?.price || ""
         this.itemDesc = this.getItemDialogData?.data?.description || ""

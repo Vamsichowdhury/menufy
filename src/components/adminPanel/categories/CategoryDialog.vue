@@ -48,7 +48,7 @@ export default {
     },
 
     computed: {
-        ...mapGetters("categories", ["getCategories", "getCategoryDialogData"]),
+        ...mapGetters("adminPanel/categories", ["getCategories", "getCategoryDialogData"]),
 
         isValid() {
             return this.categoryName && this.categoryDesc
@@ -56,8 +56,8 @@ export default {
     },
 
     methods: {
-        ...mapMutations("categories", ["setCategories", "setCategoryDialogData"]),
-        ...mapActions("categories", ["createCategory", "editCategory"]),
+        ...mapMutations("adminPanel/categories", ["setCategories", "setCategoryDialogData"]),
+        ...mapActions("adminPanel/categories", ["createCategory", "editCategory"]),
 
         closeDialog() {
             this.setCategoryDialogData({ open: false })

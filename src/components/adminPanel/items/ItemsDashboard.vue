@@ -14,15 +14,14 @@
             </template>
         </v-banner>
         <item-dialog />
-        <delete-item v-if="categoryDeletionDialog" :categoryDeletionData="categoryDeletionData"
-            :closeCategoryDeletionDialog="closeCategoryDeletionDialog" />
+        <!-- <delete-item v-if="categoryDeletionDialog" :categoryDeletionData="categoryDeletionData"
+            :closeCategoryDeletionDialog="closeCategoryDeletionDialog" /> -->
         <v-container fluid class="scrollable-container">
             <v-row>
                 <v-col v-for="(item, index) in getSelectedCategory?.totalItems" :key="index" cols="12" md="3">
                     <v-hover v-slot="{ isHovering, props }">
                         <v-card :class="{ 'on-hover': isHovering }" :elevation="isHovering ? 24 : 12" v-bind="props"
-                            :disabled="item.loading" :loading="item.loading"
-                            class="mx-auto my-12" max-width="374">
+                            :disabled="item.loading" :loading="item.loading" class="mx-auto my-12" max-width="374">
                             <template v-slot:loader="{ isActive }">
                                 <v-progress-linear :active="isActive" color="primary" height="4"
                                     indeterminate></v-progress-linear>
@@ -74,41 +73,38 @@
 </template>
 <script>
 import ItemDialog from "./ItemDialog.vue"
-import DeleteItem from "../../components/DeleteDialog.vue"
 import { mapActions, mapMutations, mapGetters } from "vuex";
 
 export default {
     components: {
-        ItemDialog,
-        DeleteItem
+        ItemDialog
     },
     data: () => ({
         tab: null,
-        categoryDeletionDialog: false
     }),
 
     computed: {
-        ...mapGetters("categories", ["getSelectedCategory"]),
+        ...mapGetters("adminPanel/items", ["getSelectedCategory"]),
     },
 
     methods: {
 
-        ...mapActions("categories", ["fetchSelectedCategory"]),
-        ...mapMutations("categories", ["setItemDialogData"]),
+        ...mapActions("adminPanel/items", ["fetchSelectedCategory"]),
+        ...mapMutations("adminPanel/items", ["setItemDialogData"]),
 
         reserve(index) {
             this.getCategories[index].loading = true;
             setTimeout(() => (this.getCategories[index].loading = false), 2000);
         },
 
-        handleItemDeletion(item, index) {
-            this.categoryDeletionData = item
-            this.categoryDeletionDialog = true
-            this.reserve(index)
-        },
-        closeCategoryDeletionDialog() {
-            this.categoryDeletionDialog = false
-        },
+        // handleItemDeletion(item, index) {
+        //     this.categoryDeletionData = item
+        //     this.categoryDeletionDialog = true
+        //     this.reserve(index)
+        // },
+        // closeCategoryDeletionDialog() {
+        //     this.categoryDeletionDialog = false
+        // },
         handleItem(operation, item, index) {
             const itemData = {
                 open: true,
