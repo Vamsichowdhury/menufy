@@ -1,4 +1,4 @@
-import { getAllCategoriesAPI } from "../../../api/api.js"
+import { getAllCategoriesAPI } from "../../../api/menu/menuAPI.js"
 const categories = {
     namespaced: true,
     state: {
@@ -18,6 +18,7 @@ const categories = {
         fetchCategories: async ({ commit }) => {
             const response = await getAllCategoriesAPI()
             commit('setCategories', response.data);
+            return response
         },
     }
 };

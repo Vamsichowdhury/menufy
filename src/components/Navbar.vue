@@ -24,9 +24,30 @@
                         :value="item.value" :to="item.path"></v-list-item>
                 </v-list>
                 <v-divider></v-divider>
+                <v-list v-if="getAuthStatus === 'Login'">
+                    <v-list-group prepend-icon="mdi-account" value="adminPanel">
+                        <template v-slot:activator="{ props }">
+                            <v-list-item v-bind="props" title="Admin Panel"></v-list-item>
+                        </template>
+                        <div class="admin-submenu">
+                            <v-list-item color="primary" to="/admin/categories" prepend-icon="mdi-shape"
+                                title="Categories" value="categories"></v-list-item>
+                            <v-list-item color="primary" to="/admin/adminDashboard" prepend-icon="mdi-account-group"
+                                title="Admin Dashboard" value="adminDashboard"></v-list-item>
+                        </div>
+
+                    </v-list-group>
+                </v-list>
+                <v-divider></v-divider>
+
                 <v-list density="compact" nav>
                     <v-list-item :prepend-icon="getTheme === 'light' ? 'mdi-track-light-off' : 'mdi-track-light'"
                         :title="getTheme === 'light' ? 'Dark' : 'Light'" @click="handleTheme()"></v-list-item>
+                </v-list>
+                <v-divider></v-divider>
+                <v-list density="compact" nav>
+                    <v-list-item :prepend-icon="getAuthStatus === 'Login' ? 'mdi-logout' : 'mdi-login'"
+                        :title="getAuthStatus === 'Login' ? 'Logout' : 'Login'" @click="handleLogin()"></v-list-item>
                 </v-list>
             </v-navigation-drawer>
 
@@ -56,7 +77,6 @@ export default {
             { icon: "mdi-cart", title: "Cart", value: "cart", path: "/cart" },
             { icon: "mdi-heart", title: "Wishlist", value: "wishlist", path: "/wishlist" },
             { icon: "mdi-map-marker", title: "Contact", value: "contact", path: "/contact" },
-            { icon: "mdi-account", title: "Admin", value: "admin", path: "/admin/categories" }
         ],
         navBarList: [
             { icon: "mdi-home", title: "Home", value: "home", path: "/home" },
@@ -66,10 +86,21 @@ export default {
     }),
     computed: {
         ...mapGetters("settings/settings", ["getTheme"]),
+        ...mapGetters("adminPanel/auth", ["getAuthStatus"]),
     },
+    // watch: {
+    //     getAuthStatus(newValue) {
+    //         if (newValue === 'Login') {
+    //             this.navList.push(
+    //                 { icon: "mdi-account", title: "Admin Panel", value: "adminPanel", path: "/admin/categories" }
+    //             )
+    //         }
+    //     }
+    // },
     methods: {
 
         ...mapMutations("settings/settings", ["setTheme"]),
+        ...mapMutations("adminPanel/auth", ["setAuthStatus"]),
 
         handleTheme() {
             if (this.getTheme === 'light') {
@@ -79,15 +110,24 @@ export default {
                 localStorage.setItem("theme", 'light')
                 this.setTheme("light")
             }
+        },
+        handleLogin() {
+            if (this.getAuthStatus === 'Login') {
+                this.setAuthStatus('Logout')
+                localStorage.removeItem("authToken")
+                this.$router.push('/login')
+            } else {
+                this.$router.push('/login')
+            }
+
         }
     },
-    created() {
-        console.log("created")
-    },
-    updated() {
-        console.log("updated")
-    }
 }
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.admin-submenu{
+    margin-left: -2rem;
+}
+
+</style>

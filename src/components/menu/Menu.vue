@@ -1,17 +1,21 @@
 <template>
-  <!-- use this
-
-  https://vuetifyjs.com/en/components/slide-groups/#active-class
-
-
-   -->
   <v-card>
-    <v-sheet elevation="6">
+    <!-- <v-sheet elevation="6">
       <v-tabs v-model="tab" align-tabs="center" color="primary" bg-color="medium-emphasis"
         next-icon="mdi-arrow-right-bold-box-outline" prev-icon="mdi-arrow-left-bold-box-outline" show-arrows>
         <v-tab v-for="category in getCategories" :key="category?._id" :value="category?._id">{{ category?.title
           }}</v-tab>
       </v-tabs>
+    </v-sheet> -->
+    <v-sheet class="mx-auto" max-width="600">
+      <v-slide-group show-arrows v-model="tab">
+        <v-slide-group-item v-for="category in getCategories" :key="category?._id" :value="category?._id"
+          v-slot="{ isSelected, toggle }">
+          <v-btn :color="isSelected ? 'primary' : undefined" class="ma-2" rounded @click="toggle">
+            {{ category?.title }}
+          </v-btn>
+        </v-slide-group-item>
+      </v-slide-group>
     </v-sheet>
     <v-tabs-window v-model="tab">
       <v-tabs-window-item v-for="category in getCategories" :key="category?._id" :value="category?._id">
@@ -74,9 +78,6 @@ export default {
   }),
   computed: {
     ...mapGetters("menu/menuDashboard", ["getCategories"]),
-    items() {
-      console.log(this.getCategories.find((category) => category?._id === this.tab).totalItems)
-    }
   },
   methods: {
     ...mapActions("menu/menuDashboard", ["fetchCategories"]),
@@ -91,8 +92,9 @@ export default {
       this.items = this.getCategories.find((category) => category?._id === newValue).totalItems
     }
   },
-  created() {
-    this.fetchCategories();
+  async created() {
+    const response = await this.fetchCategories();
+    this.tab = response?.data?.[0]?._id
   },
 }
 </script>

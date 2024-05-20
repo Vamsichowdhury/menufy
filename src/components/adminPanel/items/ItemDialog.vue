@@ -19,11 +19,11 @@ https://vuetifyjs.com/en/components/text-fields/#forms
                 <v-form v-if="getItemDialogData?.operation !== 'Delete Item'" ref="form" v-model="isValid"
                     class="pa-4 pt-6">
                     <v-text-field v-model="itemName" color="primary" label="Enter item name"
-                        variant="filled"></v-text-field>
+                        variant="outlined"></v-text-field>
                     <v-text-field v-model="itemPrice" type="number" color="primary" label="Enter price in ₹"
-                        variant="filled"></v-text-field>
+                        variant="outlined"></v-text-field>
                     <v-textarea v-model="itemDesc" color="primary" label="Enter item description" rows="1"
-                        variant="filled" auto-grow></v-textarea>
+                        variant="outlined" auto-grow></v-textarea>
                 </v-form>
                 <v-card-text v-else>
                     <div class="text-medium-emphasis mb-4">

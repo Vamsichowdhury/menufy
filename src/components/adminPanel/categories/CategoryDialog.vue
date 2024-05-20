@@ -10,8 +10,8 @@
                 </v-toolbar>
                 <v-form ref="form" v-model="isValid" class="pa-4 pt-6">
                     <v-text-field v-model="categoryName" color="primary" label="Enter Category name"
-                        variant="filled"></v-text-field>
-                    <v-textarea v-model="categoryDesc" color="primary" label="Bio" rows="1" variant="filled"
+                        variant="outlined"></v-text-field>
+                    <v-textarea v-model="categoryDesc" color="primary" label="Bio" rows="1" variant="outlined"
                         auto-grow></v-textarea>
                     <v-btn color="primary" variant="flat" block>
                         {{ getCategoryDialogData?.operation === "Add Category" ? "Upload Image" : "Change Image" }}
