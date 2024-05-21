@@ -4,6 +4,7 @@ import settings from './modules/settings/settings'
 import auth from './modules/adminPanel/auth'
 import categories from "./modules/adminPanel/categories"
 import items from "./modules/adminPanel/items"
+import adminDashboard from "./modules/adminPanel/adminDashboard"
 
 
 export const store = createStore({
@@ -25,7 +26,8 @@ export const store = createStore({
             modules: {
                 auth,
                 categories,
-                items
+                items,
+                adminDashboard
             }
         },
     }
