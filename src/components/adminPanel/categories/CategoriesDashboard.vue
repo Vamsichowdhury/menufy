@@ -27,7 +27,9 @@
                                     indeterminate></v-progress-linear>
                             </template>
 
-                            <v-img height="250" :src="item.imageSrc" cover></v-img>
+                            <v-img height="250" :src="getImageUrl(item.imageSrc)" cover></v-img>
+                            <!-- <v-img :src="getImageUrl(item.imageSrc)" aspect-ratio="16/9" class="category-image"></v-img> -->
+
 
                             <v-card-item>
                                 <v-card-title>{{ item.title }}</v-card-title>
@@ -127,6 +129,11 @@ export default {
             this.reserve(index)
 
         },
+        getImageUrl(relativePath) {
+            // Assuming your backend server is running on http://localhost:5001
+            const baseUrl = 'http://localhost:5001';
+            return `${baseUrl}${relativePath}`;
+        }
     },
 
     created() {

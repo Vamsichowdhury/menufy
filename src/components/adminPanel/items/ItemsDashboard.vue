@@ -27,7 +27,7 @@
                                     indeterminate></v-progress-linear>
                             </template>
 
-                            <v-img height="250" :src="item.imageSrc" cover></v-img>
+                            <v-img height="250" :src="getImageUrl(item.imageSrc)" cover></v-img>
 
                             <v-card-item>
                                 <v-card-title>{{ item.name }}</v-card-title>
@@ -97,14 +97,6 @@ export default {
             setTimeout(() => (this.getCategories[index].loading = false), 2000);
         },
 
-        // handleItemDeletion(item, index) {
-        //     this.categoryDeletionData = item
-        //     this.categoryDeletionDialog = true
-        //     this.reserve(index)
-        // },
-        // closeCategoryDeletionDialog() {
-        //     this.categoryDeletionDialog = false
-        // },
         handleItem(operation, item, index) {
             const itemData = {
                 open: true,
@@ -115,6 +107,12 @@ export default {
             this.setItemDialogData({ ...itemData, id: this.$route?.params?.categoryId })
             // this.reserve(index)
         },
+        
+        getImageUrl(relativePath) {
+            // Assuming your backend server is running on http://localhost:5001
+            const baseUrl = 'http://localhost:5001';
+            return `${baseUrl}${relativePath}`;
+        }
     },
 
     created() {

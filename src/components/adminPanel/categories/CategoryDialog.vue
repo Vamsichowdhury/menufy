@@ -13,9 +13,11 @@
                         variant="outlined"></v-text-field>
                     <v-textarea v-model="categoryDesc" color="primary" label="Bio" rows="1" variant="outlined"
                         auto-grow></v-textarea>
-                    <v-btn color="primary" variant="flat" block>
+                    <!-- <v-btn color="primary" variant="flat" block>
                         {{ getCategoryDialogData?.operation === "Add Category" ? "Upload Image" : "Change Image" }}
-                    </v-btn>
+                    </v-btn> -->
+                    <input type="file" @change="onFileSelected">
+
                 </v-form>
                 <v-divider></v-divider>
                 <v-card-actions>
@@ -42,6 +44,7 @@ export default {
             dialog: true,
             categoryName: "",
             categoryDesc: "",
+            categoryImage: null,
             isValid: false,
             isLoading: false,
         }
@@ -62,26 +65,38 @@ export default {
         closeDialog() {
             this.setCategoryDialogData({ open: false })
         },
-        handleCategory() {
-            const category = {
-                loading: false,
-                imageSrc: "https://cdn.vuetifyjs.com/images/cards/cooking.png",
-                title: this.categoryName,
-                description: this.categoryDesc,
-                totalItems: [],
+
+        onFileSelected(event) {
+            this.categoryImage = event.target.files[0];
+        },
+
+        async handleCategory() {
+            const formData = new FormData();
+            formData.append('title', this.categoryName);
+            formData.append('description', this.categoryDesc);
+            if (this.categoryImage) {
+                formData.append('image', this.categoryImage);
             }
-            if (this.getCategoryDialogData?.operation === "Add Category") {
-                this.createCategory(category)
-            } else if (this.getCategoryDialogData?.operation === "Edit Category") {
-                this.editCategory({ id: this.getCategoryDialogData?.data?._id, category })
+
+            this.isLoading = true;
+            try {
+                if (this.getCategoryDialogData?.operation === "Add Category") {
+                    await this.createCategory(formData);
+                } else if (this.getCategoryDialogData?.operation === "Edit Category") {
+                    await this.editCategory({ id: this.getCategoryDialogData?.data?._id, category: formData });
+                }
+                this.closeDialog();
+            } catch (error) {
+                console.error(error);
+            } finally {
+                this.isLoading = false;
             }
-            this.closeDialog()
         }
     },
 
     beforeUpdate() {
-        this.categoryName = this.getCategoryDialogData?.data?.title || ""
-        this.categoryDesc = this.getCategoryDialogData?.data?.description || ""
+        this.categoryName = this.getCategoryDialogData?.data?.title || "";
+        this.categoryDesc = this.getCategoryDialogData?.data?.description || "";
     },
 }
 </script>

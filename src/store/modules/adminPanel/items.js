@@ -39,6 +39,7 @@ const adminCategoryItems = {
             dispatch('fetchSelectedCategory', payload.categoryId);
         },
         editItem: async ({ dispatch }, payload) => {
+            console.log(payload)
             const response = await editItemAPI(payload)
             dispatch('fetchSelectedCategory', response?.data?._id);
         },

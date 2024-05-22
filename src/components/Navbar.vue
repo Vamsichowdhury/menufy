@@ -19,6 +19,20 @@
             </v-app-bar>
 
             <v-navigation-drawer v-model="drawer" :location="$vuetify.display.mobile ? 'left' : undefined" temporary>
+                <v-list v-if="getAuthStatus === 'Login'">
+                    <v-list-item :title="getCurrentAdmin?.email"
+                        prepend-avatar="https://randomuser.me/api/portraits/lego/8.jpg">
+                        <v-tooltip activator="parent" location="top">{{ getCurrentAdmin?.email }}</v-tooltip>
+                        <v-chip class="bg-primary">
+                            <p class="font-weight-bold">{{ getCurrentAdmin?.adminLevel === "superAdmin" ? 'Super Admin'
+        :
+        'Admin'
+                                }}</p>
+                        </v-chip>
+                    </v-list-item>
+                </v-list>
+
+                <v-divider></v-divider>
                 <v-list color="primary" density="compact" nav>
                     <v-list-item v-for="item in navList" :key="item.value" :prepend-icon="item.icon" :title="item.title"
                         :value="item.value" :to="item.path"></v-list-item>
@@ -74,18 +88,20 @@ export default {
         navList: [
             { icon: "mdi-home", title: "Home", value: "home", path: "/home" },
             { icon: "mdi-widgets", title: "Menu", value: "menu", path: "/menu" },
-            { icon: "mdi-cart", title: "Cart", value: "cart", path: "/cart" },
-            { icon: "mdi-heart", title: "Wishlist", value: "wishlist", path: "/wishlist" },
+            // { icon: "mdi-cart", title: "Cart", value: "cart", path: "/cart" },
+            // { icon: "mdi-heart", title: "Wishlist", value: "wishlist", path: "/wishlist" },
             { icon: "mdi-map-marker", title: "Contact", value: "contact", path: "/contact" },
         ],
         navBarList: [
             { icon: "mdi-home", title: "Home", value: "home", path: "/home" },
             { icon: "mdi-widgets", title: "Menu", value: "menu", path: "/menu" },
-            { icon: "mdi-cart", title: "Cart", value: "cart", path: "/cart" },
+            // { icon: "mdi-cart", title: "Cart", value: "cart", path: "/cart" },
+            { icon: "mdi-map-marker", title: "Contact", value: "contact", path: "/contact" },
         ],
     }),
     computed: {
         ...mapGetters("settings/settings", ["getTheme"]),
+        ...mapGetters("adminPanel/auth", ["getCurrentAdmin"]),
         ...mapGetters("adminPanel/auth", ["getAuthStatus"]),
     },
     // watch: {
@@ -126,8 +142,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.admin-submenu{
+.admin-submenu {
     margin-left: -2rem;
 }
-
 </style>

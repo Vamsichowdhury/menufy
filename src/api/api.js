@@ -44,8 +44,8 @@ const addItemToCategoryAPI = async (payload) => {
     return await axios.post(url, payload.item)
 };
 
-const editItemAPI = async ({ item, categoryId }) => {
-    let url = `${domain}/admin/categories/${categoryId}/items/${item?._id}`;
+const editItemAPI = async ({ itemId, categoryId, item }) => {
+    let url = `${domain}/admin/categories/${categoryId}/items/${itemId}`;
     return await axios.put(url, item)
 };
 

@@ -29,7 +29,7 @@
                     <v-progress-linear :active="isActive" color="primary" height="4" indeterminate></v-progress-linear>
                   </template>
 
-                  <v-img height="250" :src="item?.imageSrc" cover></v-img>
+                  <v-img height="250" :src="getImageUrl(item?.imageSrc)" cover></v-img>
 
                   <v-card-item>
                     <v-card-title>{{ item?.name }}</v-card-title>
@@ -52,12 +52,12 @@
                   </v-card-text>
 
                   <v-divider class="mx-4 mb-1"></v-divider>
-                  <v-card-actions>
+                  <!-- <v-card-actions>
                     <v-btn color="primary" text="Add to Cart" block border @click="reserve(index)">
                       <v-icon class="mx-2">mdi-cart</v-icon>
                       Add to Cart
                     </v-btn>
-                  </v-card-actions>
+                  </v-card-actions> -->
                 </v-card>
               </v-hover>
             </v-col>
@@ -86,6 +86,11 @@ export default {
     //   this.cardItems[index].loading = true;
     //   setTimeout(() => (this.cardItems[index].loading = false), 2000);
     // },
+    getImageUrl(relativePath) {
+      // Assuming your backend server is running on http://localhost:5001
+      const baseUrl = 'http://localhost:5001';
+      return `${baseUrl}${relativePath}`;
+    }
   },
   watch: {
     tab(newValue, oldValue) {

@@ -24,6 +24,8 @@ https://vuetifyjs.com/en/components/text-fields/#forms
                         variant="outlined"></v-text-field>
                     <v-textarea v-model="itemDesc" color="primary" label="Enter item description" rows="1"
                         variant="outlined" auto-grow></v-textarea>
+                    <input type="file" @change="onFileSelected">
+
                 </v-form>
                 <v-card-text v-else>
                     <div class="text-medium-emphasis mb-4">
@@ -55,6 +57,7 @@ export default {
             itemName: "",
             itemPrice: null,
             itemDesc: "",
+            itemImage: null,
             isValid: false,
             isLoading: false,
             dialog: true
@@ -76,24 +79,37 @@ export default {
         closeDialog() {
             this.setItemDialogData({ open: false })
         },
-        handleItem() {
-            const item = {
-                id: this.getItemDialogData?.data?._id,
-                loading: false,
-                imageSrc: "https://cdn.vuetifyjs.com/images/cards/cooking.png",
-                name: this.itemName,
-                description: this.itemDesc,
-                price: this.itemPrice,
+        onFileSelected(event) {
+            this.itemImage = event.target.files[0];
+        },
+
+        async handleItem() {
+            const formData = new FormData();
+            formData.append('name', this.itemName);
+            formData.append('description', this.itemDesc);
+            formData.append('price', this.itemPrice);
+            if (this.itemImage) {
+                formData.append('image', this.itemImage);
             }
-            if (this.getItemDialogData?.operation === "Add Item") {
-                this.addItemToCategory({ item, categoryId: this.getItemDialogData?.id })
-            } else if (this.getItemDialogData?.operation === "Edit Item") {
-                this.editItem({ item: { ...this.getItemDialogData?.data, ...item }, categoryId: this.getItemDialogData?.id })
-            } else {
-                this.deleteItem({ itemId: this.getItemDialogData?.data?._id, categoryId: this.getItemDialogData?.id })
+
+            this.isLoading = true;
+            console.log(this.getItemDialogData)
+            try {
+                if (this.getItemDialogData?.operation === "Add Item") {
+                    await this.addItemToCategory({ categoryId: this.getItemDialogData?.id, item: formData });
+                } else if (this.getItemDialogData?.operation === "Edit Item") {
+                    await this.editItem({ categoryId: this.getItemDialogData?.id, itemId: this.getItemDialogData?.data?._id, item: formData });
+                } else {
+                    this.deleteItem({ itemId: this.getItemDialogData?.data?._id, categoryId: this.getItemDialogData?.id })
+                }
+                this.closeDialog();
+            } catch (error) {
+                console.error(error);
+            } finally {
+                this.isLoading = false;
             }
-            this.closeDialog()
         }
+
     },
 
     beforeUpdate() {
