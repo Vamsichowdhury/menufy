@@ -76,6 +76,15 @@
         </v-container>
 
     </v-card>
+    <v-snackbar :color="snackbarColor" v-model="snackbar" :timeout="timeout" location="top">
+        {{ text }}
+
+        <template v-slot:actions>
+            <v-btn variant="text" @click="snackbar = false">
+                Close
+            </v-btn>
+        </template>
+    </v-snackbar>
 </template>
 <script>
 import CategoryDialog from "./CategoryDialog.vue"
@@ -89,7 +98,11 @@ export default {
     },
     data: () => ({
         tab: null,
-        categoryDeletionDialog: false
+        categoryDeletionDialog: false,
+        snackbar: false,
+        text: '',
+        timeout: 2000,
+        snackbarColor: null
     }),
 
     computed: {
@@ -137,6 +150,9 @@ export default {
     },
 
     created() {
+        this.snackbar = true
+        this.text = 'Successfully login'
+        this.snackbarColor = 'success'
         this.fetchCategories();
     },
 }

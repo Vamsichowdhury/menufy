@@ -16,8 +16,8 @@
                     <!-- <v-btn color="primary" variant="flat" block>
                         {{ getCategoryDialogData?.operation === "Add Category" ? "Upload Image" : "Change Image" }}
                     </v-btn> -->
-                    <input type="file" @change="onFileSelected">
-
+                    <v-file-input color="primary" variant="outlined" @change="onFileSelected" label="Upload Image"
+                        show-size></v-file-input>
                 </v-form>
                 <v-divider></v-divider>
                 <v-card-actions>

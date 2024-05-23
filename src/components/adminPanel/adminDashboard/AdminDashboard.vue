@@ -188,8 +188,8 @@ export default {
             this.close()
         },
         getColor(adminLevel) {
-            if (adminLevel === 'Super Admin') return 'green'
-            else return 'orange'
+            if (adminLevel === 'Admin') return 'orange'
+            else return 'green'
         },
         async fetchAdmins() {
             const allAdmins = await this.setAllAdmins()

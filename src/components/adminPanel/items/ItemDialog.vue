@@ -24,8 +24,8 @@ https://vuetifyjs.com/en/components/text-fields/#forms
                         variant="outlined"></v-text-field>
                     <v-textarea v-model="itemDesc" color="primary" label="Enter item description" rows="1"
                         variant="outlined" auto-grow></v-textarea>
-                    <input type="file" @change="onFileSelected">
-
+                    <v-file-input color="primary" variant="outlined" @change="onFileSelected" label="Upload Image"
+                        show-size></v-file-input>
                 </v-form>
                 <v-card-text v-else>
                     <div class="text-medium-emphasis mb-4">

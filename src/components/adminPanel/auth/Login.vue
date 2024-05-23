@@ -31,6 +31,15 @@
             <!-- <v-btn class="text-none font-weight-bold " color="info" text="Forgot Password?" variant="text"></v-btn> -->
         </v-card>
     </div>
+    <v-snackbar :color="snackbarColor" v-model="snackbar" :timeout="timeout" location="top">
+        {{ text }}
+
+        <template v-slot:actions>
+            <v-btn variant="text" @click="snackbar = false">
+                Close
+            </v-btn>
+        </template>
+    </v-snackbar>
 
 </template>
 
@@ -43,7 +52,11 @@ export default {
             adminLevel: null,
             email: '',
             password: '',
-            isValid: false
+            isValid: false,
+            snackbar: false,
+            text: '',
+            timeout: 2000,
+            snackbarColor: null
         }
     },
     computed: {
@@ -54,30 +67,51 @@ export default {
     methods: {
         ...mapActions("adminPanel/auth", ["setLoginAdmin"]),
         ...mapMutations("adminPanel/auth", ["setCurrentAdmin", "setAuthStatus"]),
+
         async handleLogin() {
-            // Replace with real authentication logic
             if (this.email && this.password) {
                 const user = {
                     adminLevel: this.adminLevel,
                     email: this.email,
                     password: this.password
+                };
+                try {
+                    const response = await this.setLoginAdmin(user);
+                    if (response?.status === 200) {
+                        localStorage.setItem('authToken', response?.data?.token);
+                        const { _id, adminLevel, email } = response?.data;
+                        this.setCurrentAdmin({ _id, adminLevel, email });
+                        this.setAuthStatus("Login");
+                        this.$router.push('/admin/categories');
+                    } else {
+                        // Show error message from the server response
+                        // alert(response?.data?.message || 'Invalid credentials');
+                        this.snackbar = true
+                        this.text = response?.data?.message || 'Invalid credentials'
+                        this.snackbarColor = 'error'
+                    }
+                } catch (error) {
+                    // Show error message from the server response
+                    if (error.response && error.response.data && error.response.data.message) {
+                        // alert(error.response.data.message);
+                        this.handleSnackbar(error.response.data.message, 'warning', 3000)
+                    } else {
+                        const text = 'An error occurred during login. Please try again.'
+                        this.handleSnackbar(text, 'warning', 3000)
+                        // alert('An error occurred during login. Please try again.');
+                    }
                 }
-                const response = await this.setLoginAdmin(user)
-                if (response?.status === 200) {
-                    localStorage.setItem('authToken', response?.data?.token)
-                    const { _id, adminLevel, email } = response?.data
-                    this.setCurrentAdmin({ _id, adminLevel, email })
-                    this.setAuthStatus("Login")
-                    this.$router.push('/admin/categories')
-                } else {
-                    alert("Invalid credentials")
-                }
-
-
             } else {
-                alert('Invalid credentials')
+                const text = 'Invalid credentials'
+                this.handleSnackbar(text, 'error', 3000)
             }
+        },
+        handleSnackbar(text, color, time) {
+            this.snackbar = true
+            this.text = text
+            this.snackbarColor = color
+            this.timeout = time
         }
-    }
+    },
 }
 </script>
